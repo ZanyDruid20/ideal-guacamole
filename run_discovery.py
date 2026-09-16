@@ -1,24 +1,23 @@
 from pathlib import Path
 
-from playwright.sync_api import sync_playwright
 from automation.capability.serializer import save_capability
 from automation.discovery.agent import run_discovery
 from automation.capability.compiler import compile_member_balance_capability
 from automation.evidence import save_log
+from automation.evidence import RunEvidence
+from automation.safety.session import protected_page
 
 
 GOAL = "Find member 12345 and return their checking and savings balances."
 
 
 def main():
-    with sync_playwright() as playwright:
-        browser = playwright.chromium.launch(headless=False)
-
-        page = browser.new_page()
-
+    evidence = RunEvidence("discovery")
+    with protected_page() as page:
         page.goto("http://127.0.0.1:5000")
 
-        result = run_discovery(page=page, goal=GOAL)
+        result = run_discovery(page=page, goal=GOAL, evidence=evidence)
+        evidence.record("result", status=result["status"], outputs_collected=list(result["outputs"]))
         save_log(
             "discovery_success.json",
             {
@@ -36,14 +35,14 @@ def main():
             }
         )
         print("\nDiscovery result:")
-        print(result)
+        print(result["status"])
         if result["status"] == "success":
             capability = compile_member_balance_capability(result)
             save_capability(capability, Path("evidence/artifacts/member_balances_v1.json"))
             print("\nCapability saved:")
             print(capability.model_dump_json(indent=2))
 
-        browser.close()
+        print(f"Detailed evidence: {evidence.directory}")
 
 
 if __name__ == "__main__":

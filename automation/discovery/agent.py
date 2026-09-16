@@ -6,13 +6,12 @@ from openai import OpenAI
 from playwright.sync_api import Page
 
 from .prompts import DISCOVERY_SYSTEM_PROMPT
+from automation.safety.guardrails import Guardrails, GuardrailViolation
 
 # Load environment configuration and create the model client.
 
 load_dotenv()
-client = OpenAI(
-    api_key=os.getenv("OPENAI_API_KEY")
-)
+client = None
 
 # Collect page text and element details so the model can choose its next action.
 def observe_page(page: Page) -> dict:
@@ -78,6 +77,9 @@ def observe_page(page: Page) -> dict:
 
 # Ask the model for one next action using the goal, page state, and collected outputs.
 def decide_next_action(goal: str, observation: dict, outputs: dict) -> dict:
+    global client
+    if client is None:
+        client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
     user_message = f"""
 Goal:
 {goal}
@@ -103,7 +105,16 @@ Return only valid JSON.
 
 # Translate the selected action into a Playwright browser operation.
 # Validate the observed row ID and return that row's text.
-def execute_action(page: Page, action: dict) -> str | None:
+def execute_action(page: Page, action: dict, guardrails: Guardrails | None = None) -> str | None:
+    policy = guardrails if guardrails is not None else Guardrails()
+    policy.validate_url(page.url)
+    policy.validate_discovery_action(action)
+    result = _execute_action(page, action)
+    policy.validate_url(page.url)
+    return result
+
+
+def _execute_action(page: Page, action: dict) -> str | None:
     action_type = action.get("action")
     target = action.get("target", {})
     value = action.get("value")
@@ -112,7 +123,7 @@ def execute_action(page: Page, action: dict) -> str | None:
         label = target.get("label")
 
         if label:
-            page.get_by_label(label).fill(value)
+            page.get_by_label(label, exact=True).fill(value)
         else:
             raise ValueError("TYPE action requires a target label")
 
@@ -120,7 +131,7 @@ def execute_action(page: Page, action: dict) -> str | None:
         name = target.get("name")
 
         if name:
-            page.get_by_role("button", name=name).click()
+            page.get_by_role("button", name=name, exact=True).click()
         else:
             raise ValueError("CLICK action requires a target name")
 
@@ -183,18 +194,39 @@ def execute_action(page: Page, action: dict) -> str | None:
 def run_discovery(
     page: Page,
     goal: str,
-    max_steps: int = 15
+    max_steps: int = 15,
+    guardrails: Guardrails | None = None,
+    evidence=None,
 ) -> dict:
+    policy = guardrails if guardrails is not None else Guardrails()
     recorded_actions = []
     outputs = {}
+    try:
+        return _run_discovery(page, goal, max_steps, policy, recorded_actions, outputs, evidence)
+    except GuardrailViolation as error:
+        if evidence is not None:
+            evidence.failure(page, len(recorded_actions) + 1, error)
+        return {
+            "status": "blocked",
+            "step": len(recorded_actions) + 1,
+            "message": str(error),
+            "actions": recorded_actions,
+            "outputs": outputs,
+        }
+    except Exception as error:
+        if evidence is not None:
+            evidence.failure(page, len(recorded_actions) + 1, error)
+        return {"status": "hard_failure", "step": len(recorded_actions) + 1,
+                "message": type(error).__name__, "actions": recorded_actions, "outputs": outputs}
+
+
+def _run_discovery(page, goal, max_steps, policy, recorded_actions, outputs, evidence=None):
 
     for step in range(max_steps):
 
         # 1. Observe current application state
+        policy.validate_url(page.url)
         observation = observe_page(page)
-
-        print(f"\nObservation {step + 1}:")
-        print(json.dumps(observation, indent=2))
 
         # 2. Ask LLM for exactly one next action
         action = decide_next_action(
@@ -203,7 +235,12 @@ def run_discovery(
             outputs
         )
 
-        print(f"Step {step + 1}: {action}")
+        policy.validate_url(page.url)
+        policy.validate_discovery_action(action)
+        if evidence is not None:
+            evidence.record("decision", step=step + 1, action=action["action"],
+                            basis="model_selected_from_current_page_observation")
+        print(f"Step {step + 1}: {action['action']}")
 
         # 3. Stop when goal is complete
         if action.get("action") == "done":
@@ -216,7 +253,8 @@ def run_discovery(
         # 4. Execute action using Playwright
         result = execute_action(
             page,
-            action
+            action,
+            guardrails=policy,
         )
 
         # 5. Save extracted values
@@ -232,6 +270,8 @@ def run_discovery(
 
         # 6. Record successful action
         recorded_actions.append(action)
+        if evidence is not None:
+            evidence.record("step_completed", step=step + 1, action=action["action"])
 
     # Prevent infinite discovery loops
     return {

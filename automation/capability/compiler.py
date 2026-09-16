@@ -8,6 +8,7 @@ from automation.capability.schema import (
     ParameterType,
     Checkpoint,
     CheckpointType,
+    RetryPolicy,
 )
 
 
@@ -75,6 +76,7 @@ def compile_member_balance_capability(
                             )
                         ),
                         save_as="checking_balance",
+                        retry_policy=RetryPolicy(max_attempts=2, delay_ms=250),
                     )
                 )
 
@@ -89,6 +91,7 @@ def compile_member_balance_capability(
                             )
                         ),
                         save_as="savings_balance",
+                        retry_policy=RetryPolicy(max_attempts=2, delay_ms=250),
                     )
                 )
 

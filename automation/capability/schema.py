@@ -71,10 +71,10 @@ class Checkpoint(BaseModel):
         return self
 # Stores the retry settings that the program must execute when there are issues
 class RetryPolicy(BaseModel):
-    max_attempts: int = 1
-    delay_ms: int = 0
+    max_attempts: int = Field(default=1, ge=1, le=3)
+    delay_ms: int = Field(default=0, ge=0, le=5000)
 
-# This describes the actions the program can take
+# This describes the ordered actions the program can/will take
 class Action(BaseModel):
     action: ActionType
     target: Optional[Target] = None

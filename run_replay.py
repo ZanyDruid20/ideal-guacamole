@@ -1,51 +1,31 @@
+import argparse
 from pathlib import Path
 
-from playwright.sync_api import sync_playwright
-
 from automation.capability.serializer import load_capability
+from automation.evidence import RunEvidence
+from automation.handoff.controller import HandoffController
 from automation.replay.executor import ReplayExecutor
-from automation.evidence import save_log
+from automation.safety.session import protected_page
 
-
-CAPABILITY_PATH = Path(
-    "evidence/artifacts/member_balances_v1.json"
-)
+CAPABILITY_PATH = Path("evidence/artifacts/member_balances_v1.json")
 
 
 def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--member-id", default="67890")
+    parser.add_argument("--headless", action="store_true")
+    args = parser.parse_args()
     capability = load_capability(CAPABILITY_PATH)
-
-    with sync_playwright() as playwright:
-        browser = playwright.chromium.launch(headless=False)
-
-        page = browser.new_page()
+    evidence = RunEvidence("replay")
+    with protected_page(headless=args.headless) as page:
         page.goto("http://127.0.0.1:5000")
-
-        executor = ReplayExecutor(page)
-
-        result = executor.execute(
-            capability=capability,
-            inputs={
-                "member_id": "67890"
-            }
-        )
-        save_log(
-            "replay_success.json",
-        {
-            "run_type": "deterministic_replay",
-            "capability": capability.name,
-            "version": capability.version,
-            "inputs": {
-                "member_id": "67890"
-            },
-            "result": result.model_dump(),
-        }
-    )
-
-        print("\nReplay result:")
+        controller = None if args.headless else HandoffController()
+        result = ReplayExecutor(page, handoff=controller, evidence=evidence).execute(
+            capability, {"member_id": args.member_id})
+        evidence.record("result", status=result.status.value, step=result.step,
+                        outputs_collected=list(result.outputs))
         print(result.model_dump_json(indent=2))
-
-        browser.close()
+        print(f"Evidence: {evidence.directory}")
 
 
 if __name__ == "__main__":

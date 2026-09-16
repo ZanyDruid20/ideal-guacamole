@@ -1,13 +1,132 @@
-from unittest.mock import create_autospec
+from unittest.mock import create_autospec, patch
 
 import pytest
 from playwright.sync_api import Locator, Page, TimeoutError
 
 from automation.capability.schema import (
     Action, ActionType, Capability, Checkpoint, CheckpointType,
-    InputParameter, OutputParameter, ParameterType, ResultStatus, Target,
+    InputParameter, OutputParameter, ParameterType, ResultStatus, RiskLevel, Target,
 )
 from automation.replay.executor import ReplayExecutor
+from automation.safety.guardrails import Guardrails
+from automation.handoff.controller import HandoffController
+
+
+def test_failed_checkpoint_hands_off_and_continues_without_repeating_click(browser_page, capability):
+    page, elements = browser_page
+    capability.actions[2].checkpoint = Checkpoint(condition=CheckpointType.URL_CONTAINS, expected="/accounts")
+    controller = HandoffController()
+    answers = iter(["resume", "Opened accounts manually"])
+    def operator(prompt):
+        assert controller.is_human_controlled()
+        elements["#checking"].inner_text.assert_not_called()
+        page.url = "http://127.0.0.1:5000/accounts"
+        return next(answers)
+    with patch("builtins.input", side_effect=operator):
+        result = ReplayExecutor(page, handoff=controller).execute(capability, {"member_id": "12345"})
+    assert result.status == ResultStatus.SUCCESS
+    assert result.outputs["checking_balance"] == "$100.00"
+    page.get_by_role.return_value.click.assert_called_once_with()
+    assert not controller.active
+    assert [event["event"] for event in controller.events] == ["requested", "resumed"]
+
+
+def test_unfixed_checkpoint_remains_paused_and_abort_stops_extraction(browser_page, capability):
+    page, elements = browser_page
+    capability.actions[2].checkpoint = Checkpoint(condition=CheckpointType.URL_CONTAINS, expected="/accounts")
+    controller = HandoffController()
+    with patch("builtins.input", side_effect=["resume", "Tried fixing page", "abort"]):
+        result = ReplayExecutor(page, handoff=controller).execute(capability, {"member_id": "12345"})
+    assert result.status == ResultStatus.ESCALATION_REQUIRED
+    elements["#checking"].inner_text.assert_not_called()
+    assert [event["event"] for event in controller.events] == ["requested", "verification_failed", "aborted"]
+
+
+def test_policy_failure_cannot_be_overridden_by_handoff(browser_page, capability):
+    page, _ = browser_page
+    capability.actions[0].value = "https://example.com"
+    controller = HandoffController()
+    with patch("builtins.input") as prompt:
+        result = ReplayExecutor(page, handoff=controller).execute(capability, {})
+    assert result.status == ResultStatus.HARD_FAILURE
+    prompt.assert_not_called()
+    page.goto.assert_not_called()
+
+
+def test_final_checkpoint_handoff_verifies_before_success(browser_page, capability):
+    page, elements = browser_page
+    elements["body"].inner_text.side_effect = ["Accounts", "Expired", "Accounts"]
+    controller = HandoffController()
+    with patch("builtins.input", side_effect=["resume", "Restored accounts page"]):
+        result = ReplayExecutor(page, handoff=controller).execute(capability, {"member_id": "12345"})
+    assert result.status == ResultStatus.SUCCESS
+    assert elements["body"].inner_text.call_count == 3
+
+
+def test_wait_checkpoint_can_resume_after_manual_correction(browser_page, capability):
+    page, elements = browser_page
+    capability.actions.insert(0, Action(
+        action=ActionType.WAIT,
+        checkpoint=Checkpoint(condition=CheckpointType.VISIBLE, target=Target(selector="#ready")),
+    ))
+    elements["#ready"].wait_for.side_effect = [TimeoutError("Not ready"), None]
+    with patch("builtins.input", side_effect=["resume", "Made page ready"]):
+        result = ReplayExecutor(page, handoff=HandoffController()).execute(capability, {"member_id": "12345"})
+    assert result.status == ResultStatus.SUCCESS
+    assert elements["#ready"].wait_for.call_count == 2
+
+
+@pytest.mark.parametrize("value,inputs", [
+    ("https://example.com", {}),
+    ("{{destination}}", {"destination": "https://example.com"}),
+])
+def test_external_navigation_is_blocked_before_goto(browser_page, capability, value, inputs):
+    page, _ = browser_page
+    capability.actions[0].value = value
+    result = ReplayExecutor(page).execute(capability, inputs)
+    assert result.status == ResultStatus.HARD_FAILURE
+    assert result.step == 1
+    assert "outside the allowed application" in result.message
+    page.goto.assert_not_called()
+    page.get_by_label.assert_not_called()
+
+
+@pytest.mark.parametrize("risk", [RiskLevel.RISKY, RiskLevel.IRREVERSIBLE])
+def test_risky_click_is_blocked_before_browser_interaction(browser_page, capability, risk):
+    page, _ = browser_page
+    capability.actions[2].risk_level = risk
+    result = ReplayExecutor(page).execute(capability, {"member_id": "12345"})
+    assert result.status == ResultStatus.HARD_FAILURE
+    assert result.step == 3
+    page.get_by_role.assert_not_called()
+
+
+def test_disallowed_current_page_blocks_execution(browser_page, capability):
+    page, _ = browser_page
+    page.url = "https://example.com"
+    result = ReplayExecutor(page).execute(capability, {"member_id": "12345"})
+    assert result.status == ResultStatus.HARD_FAILURE
+    page.goto.assert_not_called()
+
+
+def test_external_redirect_stops_before_next_action(browser_page, capability):
+    page, _ = browser_page
+    def redirect(url):
+        page.url = "https://example.com"
+    page.goto.side_effect = redirect
+    result = ReplayExecutor(page).execute(capability, {"member_id": "12345"})
+    assert result.status == ResultStatus.HARD_FAILURE
+    assert result.step == 1
+    page.get_by_label.assert_not_called()
+
+
+def test_executor_honors_supplied_action_policy(browser_page, capability):
+    page, _ = browser_page
+    policy = Guardrails()
+    policy.allowed_action_types.remove(ActionType.NAVIGATE)
+    result = ReplayExecutor(page, guardrails=policy).execute(capability, {})
+    assert result.status == ResultStatus.HARD_FAILURE
+    page.goto.assert_not_called()
 
 
 @pytest.fixture
