@@ -1,0 +1,26 @@
+[
+  {
+    "timestamp": "2026-09-16T18:03:45.943194+00:00",
+    "event": "step_started",
+    "step": 1,
+    "action": "wait"
+  },
+  {
+    "timestamp": "2026-09-16T18:03:45.992385+00:00",
+    "event": "failure",
+    "step": 1,
+    "error_type": "ValueError",
+    "snapshot": "failure_1.json"
+  },
+  {
+    "timestamp": "2026-09-16T18:03:45.993012+00:00",
+    "event": "handoff_requested",
+    "step": 1,
+    "checkpoint": "text_contains"
+  },
+  {
+    "timestamp": "2026-09-16T18:04:10.735591+00:00",
+    "event": "handoff_aborted",
+    "step": 1
+  }
+]

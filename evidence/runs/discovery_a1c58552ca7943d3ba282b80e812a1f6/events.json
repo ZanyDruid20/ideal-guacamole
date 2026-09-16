@@ -1,0 +1,70 @@
+[
+  {
+    "timestamp": "2026-09-16T18:03:01.625394+00:00",
+    "event": "decision",
+    "step": 1,
+    "action": "type",
+    "basis": "model_selected_from_current_page_observation"
+  },
+  {
+    "timestamp": "2026-09-16T18:03:01.649621+00:00",
+    "event": "step_completed",
+    "step": 1,
+    "action": "type"
+  },
+  {
+    "timestamp": "2026-09-16T18:03:02.758442+00:00",
+    "event": "decision",
+    "step": 2,
+    "action": "click",
+    "basis": "model_selected_from_current_page_observation"
+  },
+  {
+    "timestamp": "2026-09-16T18:03:02.892518+00:00",
+    "event": "step_completed",
+    "step": 2,
+    "action": "click"
+  },
+  {
+    "timestamp": "2026-09-16T18:03:05.135271+00:00",
+    "event": "decision",
+    "step": 3,
+    "action": "extract",
+    "basis": "model_selected_from_current_page_observation"
+  },
+  {
+    "timestamp": "2026-09-16T18:03:05.142830+00:00",
+    "event": "step_completed",
+    "step": 3,
+    "action": "extract"
+  },
+  {
+    "timestamp": "2026-09-16T18:03:07.068297+00:00",
+    "event": "decision",
+    "step": 4,
+    "action": "extract",
+    "basis": "model_selected_from_current_page_observation"
+  },
+  {
+    "timestamp": "2026-09-16T18:03:07.074369+00:00",
+    "event": "step_completed",
+    "step": 4,
+    "action": "extract"
+  },
+  {
+    "timestamp": "2026-09-16T18:03:08.973149+00:00",
+    "event": "decision",
+    "step": 5,
+    "action": "done",
+    "basis": "model_selected_from_current_page_observation"
+  },
+  {
+    "timestamp": "2026-09-16T18:03:08.974923+00:00",
+    "event": "result",
+    "status": "success",
+    "outputs_collected": [
+      "checking_balance",
+      "savings_balance"
+    ]
+  }
+]

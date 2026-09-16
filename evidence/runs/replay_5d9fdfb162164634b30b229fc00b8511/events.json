@@ -1,0 +1,56 @@
+[
+  {
+    "timestamp": "2026-09-16T18:03:21.927199+00:00",
+    "event": "step_started",
+    "step": 1,
+    "action": "type"
+  },
+  {
+    "timestamp": "2026-09-16T18:03:21.973227+00:00",
+    "event": "step_completed",
+    "step": 1
+  },
+  {
+    "timestamp": "2026-09-16T18:03:21.974044+00:00",
+    "event": "step_started",
+    "step": 2,
+    "action": "click"
+  },
+  {
+    "timestamp": "2026-09-16T18:03:22.141782+00:00",
+    "event": "step_completed",
+    "step": 2
+  },
+  {
+    "timestamp": "2026-09-16T18:03:22.142595+00:00",
+    "event": "step_started",
+    "step": 3,
+    "action": "extract"
+  },
+  {
+    "timestamp": "2026-09-16T18:03:22.150455+00:00",
+    "event": "step_completed",
+    "step": 3
+  },
+  {
+    "timestamp": "2026-09-16T18:03:22.151030+00:00",
+    "event": "step_started",
+    "step": 4,
+    "action": "extract"
+  },
+  {
+    "timestamp": "2026-09-16T18:03:22.160428+00:00",
+    "event": "step_completed",
+    "step": 4
+  },
+  {
+    "timestamp": "2026-09-16T18:03:22.165938+00:00",
+    "event": "result",
+    "status": "success",
+    "step": null,
+    "outputs_collected": [
+      "checking_balance",
+      "savings_balance"
+    ]
+  }
+]

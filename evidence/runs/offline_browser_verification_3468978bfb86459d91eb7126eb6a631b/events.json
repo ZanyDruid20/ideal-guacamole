@@ -1,0 +1,85 @@
+[
+  {
+    "timestamp": "2026-09-16T17:56:52.976831+00:00",
+    "event": "step_started",
+    "step": 1,
+    "action": "type"
+  },
+  {
+    "timestamp": "2026-09-16T17:56:53.065055+00:00",
+    "event": "step_completed",
+    "step": 1
+  },
+  {
+    "timestamp": "2026-09-16T17:56:53.065672+00:00",
+    "event": "step_started",
+    "step": 2,
+    "action": "click"
+  },
+  {
+    "timestamp": "2026-09-16T17:56:53.221742+00:00",
+    "event": "step_completed",
+    "step": 2
+  },
+  {
+    "timestamp": "2026-09-16T17:56:53.222581+00:00",
+    "event": "step_started",
+    "step": 3,
+    "action": "extract"
+  },
+  {
+    "timestamp": "2026-09-16T17:56:53.232252+00:00",
+    "event": "step_completed",
+    "step": 3
+  },
+  {
+    "timestamp": "2026-09-16T17:56:53.233008+00:00",
+    "event": "step_started",
+    "step": 4,
+    "action": "extract"
+  },
+  {
+    "timestamp": "2026-09-16T17:56:53.238180+00:00",
+    "event": "step_completed",
+    "step": 4
+  },
+  {
+    "timestamp": "2026-09-16T17:56:53.242882+00:00",
+    "event": "verified",
+    "scenario": "successful_replay"
+  },
+  {
+    "timestamp": "2026-09-16T17:56:53.304227+00:00",
+    "event": "step_started",
+    "step": 1,
+    "action": "type"
+  },
+  {
+    "timestamp": "2026-09-16T17:56:53.330278+00:00",
+    "event": "step_completed",
+    "step": 1
+  },
+  {
+    "timestamp": "2026-09-16T17:56:53.332250+00:00",
+    "event": "step_started",
+    "step": 2,
+    "action": "click"
+  },
+  {
+    "timestamp": "2026-09-16T17:56:53.462570+00:00",
+    "event": "business_outcome",
+    "step": 2,
+    "reason": "member_not_found"
+  },
+  {
+    "timestamp": "2026-09-16T17:56:53.463819+00:00",
+    "event": "verified",
+    "scenario": "not_found"
+  },
+  {
+    "timestamp": "2026-09-16T17:56:53.483536+00:00",
+    "event": "verified",
+    "scenario": "external_redirect_blocked",
+    "external_requests": 0
+  }
+]

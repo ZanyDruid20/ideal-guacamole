@@ -1,0 +1,48 @@
+[
+  {
+    "timestamp": "2026-09-16T18:04:14.936965+00:00",
+    "event": "step_started",
+    "step": 1,
+    "action": "wait"
+  },
+  {
+    "timestamp": "2026-09-16T18:04:14.976168+00:00",
+    "event": "failure",
+    "step": 1,
+    "error_type": "ValueError",
+    "snapshot": "failure_1.json"
+  },
+  {
+    "timestamp": "2026-09-16T18:04:14.976595+00:00",
+    "event": "handoff_requested",
+    "step": 1,
+    "checkpoint": "text_contains"
+  },
+  {
+    "timestamp": "2026-09-16T18:06:07.706214+00:00",
+    "event": "handoff_resumed",
+    "step": 1
+  },
+  {
+    "timestamp": "2026-09-16T18:06:07.707249+00:00",
+    "event": "step_started",
+    "step": 2,
+    "action": "extract"
+  },
+  {
+    "timestamp": "2026-09-16T18:06:07.719555+00:00",
+    "event": "step_completed",
+    "step": 2
+  },
+  {
+    "timestamp": "2026-09-16T18:06:07.720590+00:00",
+    "event": "step_started",
+    "step": 3,
+    "action": "extract"
+  },
+  {
+    "timestamp": "2026-09-16T18:06:07.730880+00:00",
+    "event": "step_completed",
+    "step": 3
+  }
+]

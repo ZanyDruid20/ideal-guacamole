@@ -1,0 +1,189 @@
+[
+  {
+    "timestamp": "2026-09-16T17:57:38.723287+00:00",
+    "event": "step_started",
+    "step": 1,
+    "action": "type"
+  },
+  {
+    "timestamp": "2026-09-16T17:57:38.750006+00:00",
+    "event": "step_completed",
+    "step": 1
+  },
+  {
+    "timestamp": "2026-09-16T17:57:38.750568+00:00",
+    "event": "step_started",
+    "step": 2,
+    "action": "click"
+  },
+  {
+    "timestamp": "2026-09-16T17:57:38.845877+00:00",
+    "event": "step_completed",
+    "step": 2
+  },
+  {
+    "timestamp": "2026-09-16T17:57:38.846916+00:00",
+    "event": "step_started",
+    "step": 3,
+    "action": "extract"
+  },
+  {
+    "timestamp": "2026-09-16T17:57:38.855776+00:00",
+    "event": "step_completed",
+    "step": 3
+  },
+  {
+    "timestamp": "2026-09-16T17:57:38.856638+00:00",
+    "event": "step_started",
+    "step": 4,
+    "action": "extract"
+  },
+  {
+    "timestamp": "2026-09-16T17:57:38.860499+00:00",
+    "event": "step_completed",
+    "step": 4
+  },
+  {
+    "timestamp": "2026-09-16T17:57:38.863000+00:00",
+    "event": "verified",
+    "scenario": "successful_replay"
+  },
+  {
+    "timestamp": "2026-09-16T17:57:38.914489+00:00",
+    "event": "step_started",
+    "step": 1,
+    "action": "type"
+  },
+  {
+    "timestamp": "2026-09-16T17:57:38.932529+00:00",
+    "event": "step_completed",
+    "step": 1
+  },
+  {
+    "timestamp": "2026-09-16T17:57:38.933118+00:00",
+    "event": "step_started",
+    "step": 2,
+    "action": "click"
+  },
+  {
+    "timestamp": "2026-09-16T17:57:39.015734+00:00",
+    "event": "business_outcome",
+    "step": 2,
+    "reason": "member_not_found"
+  },
+  {
+    "timestamp": "2026-09-16T17:57:39.016356+00:00",
+    "event": "verified",
+    "scenario": "not_found"
+  },
+  {
+    "timestamp": "2026-09-16T17:57:39.027874+00:00",
+    "event": "verified",
+    "scenario": "external_redirect_blocked",
+    "external_requests": 0
+  },
+  {
+    "timestamp": "2026-09-16T17:57:39.122082+00:00",
+    "event": "step_started",
+    "step": 1,
+    "action": "wait"
+  },
+  {
+    "timestamp": "2026-09-16T17:57:39.172429+00:00",
+    "event": "recoverable_failure",
+    "step": 1,
+    "attempt": 1,
+    "reason": "read_or_wait_timeout"
+  },
+  {
+    "timestamp": "2026-09-16T17:57:39.484139+00:00",
+    "event": "step_completed",
+    "step": 1
+  },
+  {
+    "timestamp": "2026-09-16T17:57:39.484758+00:00",
+    "event": "verified",
+    "scenario": "bounded_recovery"
+  },
+  {
+    "timestamp": "2026-09-16T17:57:39.518624+00:00",
+    "event": "step_started",
+    "step": 1,
+    "action": "wait"
+  },
+  {
+    "timestamp": "2026-09-16T17:57:39.535825+00:00",
+    "event": "failure",
+    "step": 1,
+    "error_type": "ValueError",
+    "snapshot": "failure_20.json"
+  },
+  {
+    "timestamp": "2026-09-16T17:57:39.536256+00:00",
+    "event": "handoff_requested",
+    "step": 1,
+    "checkpoint": "text_contains"
+  },
+  {
+    "timestamp": "2026-09-16T17:57:39.622338+00:00",
+    "event": "handoff_resumed",
+    "step": 1
+  },
+  {
+    "timestamp": "2026-09-16T17:57:39.622972+00:00",
+    "event": "step_started",
+    "step": 2,
+    "action": "extract"
+  },
+  {
+    "timestamp": "2026-09-16T17:57:39.626023+00:00",
+    "event": "step_completed",
+    "step": 2
+  },
+  {
+    "timestamp": "2026-09-16T17:57:39.626498+00:00",
+    "event": "step_started",
+    "step": 3,
+    "action": "extract"
+  },
+  {
+    "timestamp": "2026-09-16T17:57:39.628606+00:00",
+    "event": "step_completed",
+    "step": 3
+  },
+  {
+    "timestamp": "2026-09-16T17:57:39.631271+00:00",
+    "event": "verified",
+    "scenario": "same_page_handoff",
+    "operator": "automated_test"
+  },
+  {
+    "timestamp": "2026-09-16T17:57:39.657213+00:00",
+    "event": "step_started",
+    "step": 1,
+    "action": "wait"
+  },
+  {
+    "timestamp": "2026-09-16T17:57:39.675184+00:00",
+    "event": "failure",
+    "step": 1,
+    "error_type": "ValueError",
+    "snapshot": "failure_29.json"
+  },
+  {
+    "timestamp": "2026-09-16T17:57:39.675599+00:00",
+    "event": "handoff_requested",
+    "step": 1,
+    "checkpoint": "text_contains"
+  },
+  {
+    "timestamp": "2026-09-16T17:57:39.675963+00:00",
+    "event": "handoff_aborted",
+    "step": 1
+  },
+  {
+    "timestamp": "2026-09-16T17:57:39.676340+00:00",
+    "event": "verified",
+    "scenario": "handoff_abort"
+  }
+]
