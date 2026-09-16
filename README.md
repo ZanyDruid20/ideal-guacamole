@@ -1,5 +1,37 @@
 # Bank Member Automation Agent
-This prohect demonstrates browser automation against a mock member account application.
+
+## Test failure-triggered replay handoff
+
+Keep the mock app running in one terminal:
+
+```powershell
+python mock_app/app.py
+```
+
+In another terminal with the virtual environment active:
+
+```powershell
+python run_replay_handoff.py
+```
+
+This controlled demo uses an in-memory copy of the saved capability. It requires
+the Accounts checkpoint before extraction, while starting on the search page,
+so the checkpoint deliberately fails. When automation pauses, search for member
+`12345` in the same open browser. Type `resume` in the terminal and describe your
+manual change without including member details or secrets. The checkpoint must
+pass before balance extraction continues. Trying `resume` before fixing the page
+keeps automation paused. Type `abort` to stop instead.
+
+Each demo writes `evidence/logs/replay_handoff_<run-id>.json`, including handoff
+events, the operator's note, the final status, and collected output names.
+Operator notes are free text: review them before sharing evidence.
+
+Normal replay also enables checkpoint handoff. It can continue after a completed
+action's checkpoint failure, a WAIT failure, or a final checkpoint failure.
+It does not repeat failed clicks, bypass policy violations, or automatically
+recover arbitrary action errors. Discovery handoff remains separate work.
+
+This project demonstrates browser automation against a mock member account application.
 
 A model agent discovers the steps needed to retrieve checking and savings balances. Those steps are compiled into a reusable JSON capability, which can then be replayed without an LLM being called
 
@@ -28,14 +60,14 @@ python -m venv venv
 .\venv\Scripts\Activate.ps1
 ```
 
-Install dependiencies and the browser:
+Install dependencies and the browser:
 
 ```powershell
 python -m pip install -r requirements.txt
 python -m playwright install chromium
 ```
 
-For live discovery, create a `.env ` file in the repository root:
+For live discovery, create a `.env` file in the repository root:
 
 ```dotenv
 OPENAI_API_KEY=your_api_key_here
@@ -156,8 +188,8 @@ python run_handoff_demo.py
 Follow the terminal instructions to interact manually with the open
 browser, then return control to the script.
 
-This is a separate handoff demonstration; automatic handoff from replay
-failures is not currently implemented.
+This older demo shows manual control transfer. Use `python run_replay_handoff.py`
+for the integrated checkpoint-failure, verification, and resume demonstration.
 
 ## Project structure
 
@@ -177,4 +209,33 @@ failures is not currently implemented.
 The compiler is specific to the mock member-balance application and
 uses application-specific labels and selectors. Changes to the UI may cause replay to fail.
 
-Replay reports action and checkpoint failures but does not automatically repair workflows, retry actions, or request human handoff. Guardrail helpers are defined separately and are not currently enforced by the replay executor.
+Replay retries only read-only EXTRACT and WAIT timeouts when the artifact specifies a retry policy (at most three attempts). Clicks are never automatically repeated. Checkpoint failures can request handoff; policy violations and unsafe-to-resume action errors stop. Discovery enforces action policy and a step budget but does not resume through handoff. Automatic UI repair and desktop automation are not implemented.
+
+## Verification and evidence
+
+Run all unit tests with `python -m pytest tests -v`.
+For a headless browser verification requiring no model or separately started server:
+
+```powershell
+python verify_system.py
+```
+
+This starts temporary local servers and checks success, not-found, an external
+redirect (the forbidden server must receive zero requests), bounded recovery,
+same-page handoff, and abort. Its operator is automated and labeled as such;
+it is not evidence of a live LLM discovery run. The earlier genuine discovery
+summary remains in `evidence/logs/discovery_success.json`.
+
+New runs write timestamped events under `evidence/runs/<type>_<id>/`.
+On replay failure they save a structural DOM summary (element counts and document
+readiness), excluding page text, attributes, URLs, and input values. This is less
+visually detailed than a screenshot but avoids saving private page contents.
+Existing `evidence/logs/` and screenshots are historical synthetic-demo evidence.
+
+```powershell
+python run_replay.py --member-id 67890
+python run_replay.py --member-id unknown --headless
+```
+
+The first example retrieves balances; the second produces a business outcome.
+Headless replay disables interactive handoff. Browser runners enforce an origin allowlist on HTTP requests, redirect destinations, and popup requests; service workers and WebSockets are blocked. This is a local trusted-app prototype, not an OS security sandbox. Use synthetic data only. Discovery sends page observations to the model; do not use it with production credentials or customer information.
