@@ -13,7 +13,7 @@
 ### System Architecture
 ```mermaid
 flowchart LR
-    A[User Goal] --> [Discovery Agent]
+    A[User Goal] --> B[Discovery Agent]
     B --> C[Playwright]
     C --> D[Target Web App]
     D --> B
@@ -134,4 +134,3 @@ Logs redact sensitive fields, while failure snapshots exclude page text and inpu
 I limited the prototype to one mock web application and a member-balance workflow. Desktop automation, multi-tenant infrastructure, automatic UI repair, and a full operator dashboard were left out to keep the implementation focused. Human control uses the local browser and terminal instead of a remote console.
 
 Next, I would add discovery-side handoff, stronger detection of repeated actions without progress, and stricter runtime input/output validation. I would then introduce surface adapters and tenant-specific configuration to reuse capabilities across different application environments.
-
