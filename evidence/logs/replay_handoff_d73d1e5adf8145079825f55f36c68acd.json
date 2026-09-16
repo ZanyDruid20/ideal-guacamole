@@ -1,0 +1,24 @@
+{
+  "run_type": "controlled_replay_handoff",
+  "capability": "get_member_balances",
+  "scenario": "Manual search required before balance extraction",
+  "events": [
+    {
+      "event": "requested",
+      "capability": "get_member_balances",
+      "step": 1
+    },
+    {
+      "event": "resumed",
+      "step": 1,
+      "operator_note": "Searched for the requested member and opened the accounts page."
+    }
+  ],
+  "status": "success",
+  "step": null,
+  "outputs_collected": [
+    "checking_balance",
+    "savings_balance"
+  ],
+  "timestamp": "2026-09-16T17:51:32.426106+00:00"
+}

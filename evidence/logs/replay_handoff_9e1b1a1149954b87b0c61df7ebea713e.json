@@ -1,0 +1,20 @@
+{
+  "run_type": "controlled_replay_handoff",
+  "capability": "get_member_balances",
+  "scenario": "Manual search required before balance extraction",
+  "events": [
+    {
+      "event": "requested",
+      "capability": "get_member_balances",
+      "step": 1
+    },
+    {
+      "event": "aborted",
+      "step": 1
+    }
+  ],
+  "status": "escalation_required",
+  "step": 1,
+  "outputs_collected": [],
+  "timestamp": "2026-09-16T18:04:10.738380+00:00"
+}

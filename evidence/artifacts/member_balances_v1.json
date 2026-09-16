@@ -65,7 +65,10 @@
       },
       "value": null,
       "checkpoint": null,
-      "retry_policy": null,
+      "retry_policy": {
+        "max_attempts": 2,
+        "delay_ms": 250
+      },
       "save_as": "checking_balance",
       "risk_level": "safe"
     },
@@ -79,7 +82,10 @@
       },
       "value": null,
       "checkpoint": null,
-      "retry_policy": null,
+      "retry_policy": {
+        "max_attempts": 2,
+        "delay_ms": 250
+      },
       "save_as": "savings_balance",
       "risk_level": "safe"
     }
