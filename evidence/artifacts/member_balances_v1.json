@@ -1,0 +1,97 @@
+{
+  "name": "get_member_balances",
+  "version": "1.0.0",
+  "description": "Find a member by member ID and return their checking and savings balances.",
+  "inputs": [
+    {
+      "name": "member_id",
+      "type": "string",
+      "required": true,
+      "description": "Member ID to search for."
+    }
+  ],
+  "outputs": [
+    {
+      "name": "checking_balance",
+      "type": "string",
+      "description": "Member checking account balance."
+    },
+    {
+      "name": "savings_balance",
+      "type": "string",
+      "description": "Member savings account balance."
+    }
+  ],
+  "actions": [
+    {
+      "action": "type",
+      "target": {
+        "role": null,
+        "label": "Member ID",
+        "name": null,
+        "selector": null
+      },
+      "value": "{{member_id}}",
+      "checkpoint": null,
+      "retry_policy": null,
+      "save_as": null,
+      "risk_level": "safe"
+    },
+    {
+      "action": "click",
+      "target": {
+        "role": null,
+        "label": null,
+        "name": "Search",
+        "selector": null
+      },
+      "value": null,
+      "checkpoint": {
+        "condition": "url_contains",
+        "target": null,
+        "expected": "/search"
+      },
+      "retry_policy": null,
+      "save_as": null,
+      "risk_level": "safe"
+    },
+    {
+      "action": "extract",
+      "target": {
+        "role": null,
+        "label": null,
+        "name": null,
+        "selector": "tbody tr:has-text(\"checking\") td:nth-child(3)"
+      },
+      "value": null,
+      "checkpoint": null,
+      "retry_policy": null,
+      "save_as": "checking_balance",
+      "risk_level": "safe"
+    },
+    {
+      "action": "extract",
+      "target": {
+        "role": null,
+        "label": null,
+        "name": null,
+        "selector": "tbody tr:has-text(\"savings\") td:nth-child(3)"
+      },
+      "value": null,
+      "checkpoint": null,
+      "retry_policy": null,
+      "save_as": "savings_balance",
+      "risk_level": "safe"
+    }
+  ],
+  "success_condition": {
+    "condition": "text_contains",
+    "target": {
+      "role": null,
+      "label": null,
+      "name": null,
+      "selector": "body"
+    },
+    "expected": "Accounts"
+  }
+}

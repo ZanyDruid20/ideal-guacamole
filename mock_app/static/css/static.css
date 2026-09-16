@@ -1,0 +1,90 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    background: #f2f2f2;
+    color: #222;
+}
+
+header {
+    background: #26384a;
+    color: white;
+    padding: 16px 30px;
+    border-bottom: 4px solid #182532;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 24px;
+}
+
+header p {
+    margin: 5px 0 0;
+    font-size: 14px;
+}
+
+main {
+    width: 850px;
+    max-width: 90%;
+    margin: 30px auto;
+}
+
+section {
+    background: white;
+    border: 1px solid #aaa;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+h2 {
+    margin-top: 0;
+    font-size: 19px;
+    border-bottom: 1px solid #bbb;
+    padding-bottom: 8px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 15px 0;
+}
+
+th,
+td {
+    border: 1px solid #aaa;
+    padding: 10px;
+    text-align: left;
+}
+
+th {
+    background: #e5e5e5;
+}
+
+input[type="text"] {
+    width: 250px;
+    padding: 8px;
+    border: 1px solid #888;
+}
+
+button {
+    padding: 8px 14px;
+    border: 1px solid #555;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #ddd;
+}
+
+.error-message {
+    margin-top: 15px;
+    padding: 10px;
+    border: 1px solid #a00;
+    background: #ffe5e5;
+}
+
+#activity-log {
+    border: 1px solid #aaa;
+    background: #f7f7f7;
+    padding: 12px;
+    min-height: 50px;
+}

@@ -1,0 +1,20 @@
+{
+  "run_type": "deterministic_replay",
+  "capability": "get_member_balances",
+  "version": "1.0.0",
+  "inputs": {
+    "member_id": "[REDACTED]"
+  },
+  "result": {
+    "status": "success",
+    "step": null,
+    "message": null,
+    "expected": null,
+    "observed": null,
+    "outputs": {
+      "checking_balance": "$912.10",
+      "savings_balance": "$12450.00"
+    }
+  },
+  "timestamp": "2026-09-13T22:28:35.574125+00:00"
+}

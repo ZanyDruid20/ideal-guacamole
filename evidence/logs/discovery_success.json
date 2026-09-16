@@ -1,0 +1,17 @@
+{
+  "run_type": "llm_discovery",
+  "goal": "Find a member and return their checking and savings balances.",
+  "member_id": "[REDACTED]",
+  "status": "success",
+  "actions": [
+    "type",
+    "click",
+    "extract",
+    "extract"
+  ],
+  "outputs_collected": [
+    "checking_balance",
+    "savings_balance"
+  ],
+  "timestamp": "2026-09-13T22:42:16.699074+00:00"
+}

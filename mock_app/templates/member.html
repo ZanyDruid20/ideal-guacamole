@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Member Details</title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css') }}"
+    >
+</head>
+
+<body>
+
+    <header>
+        <h1>Member Services Portal</h1>
+        <p>Account Management System</p>
+    </header>
+
+    <main>
+
+        <section>
+            <h2>Member Information</h2>
+
+            <table>
+                <tr>
+                    <td>Member ID:</td>
+                    <td>{{ member.member_id }}</td>
+                </tr>
+
+                <tr>
+                    <td>Name:</td>
+                    <td>{{ member.name }}</td>
+                </tr>
+
+                <tr>
+                    <td>Status:</td>
+                    <td>{{ member.status }}</td>
+                </tr>
+            </table>
+        </section>
+
+
+        <section>
+            <h2>Accounts</h2>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Account Type</th>
+                        <th>Account Number</th>
+                        <th>Balance</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    {% for account in member.accounts %}
+
+                    <tr>
+                        <td>{{ account.type }}</td>
+                        <td>{{ account.account_number }}</td>
+                        <td>${{ "%.2f"|format(account.balance) }}</td>
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+            </table>
+        </section>
+
+
+        <p>
+            <a href="/">Return to Member Search</a>
+        </p>
+
+    </main>
+
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+
+</body>
+</html>

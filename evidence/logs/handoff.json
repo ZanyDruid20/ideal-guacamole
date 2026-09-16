@@ -1,0 +1,9 @@
+{
+  "run_type": "human_handoff",
+  "reason": "Manual verification required",
+  "step": 2,
+  "current_url": "http://127.0.0.1:5000/search",
+  "human_action": "Human manually completed the requested interaction in the same live browser session.",
+  "session_preserved": true,
+  "timestamp": "2026-09-13T23:05:19.777403+00:00"
+}

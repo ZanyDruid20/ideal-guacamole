@@ -1,0 +1,154 @@
+{
+  "members": [
+    {
+      "member_id": "12345",
+      "name": "Jonathan Carter",
+      "status": "active",
+      "accounts": [
+        {
+          "type": "checking",
+          "account_number": "CHK-1001",
+          "balance": 2450.25
+        },
+        {
+          "type": "savings",
+          "account_number": "SAV-1001",
+          "balance": 7821.40
+        }
+      ]
+    },
+    {
+      "member_id": "23456",
+      "name": "Alexis Thompson",
+      "status": "active",
+      "accounts": [
+        {
+          "type": "checking",
+          "account_number": "CHK-1002",
+          "balance": 1540.80
+        },
+        {
+          "type": "savings",
+          "account_number": "SAV-1002",
+          "balance": 9300.15
+        }
+      ]
+    },
+    {
+      "member_id": "34567",
+      "name": "Daniel Brooks",
+      "status": "active",
+      "accounts": [
+        {
+          "type": "savings",
+          "account_number": "SAV-1003",
+          "balance": 4250.00
+        }
+      ]
+    },
+    {
+      "member_id": "45678",
+      "name": "Elena Martinez",
+      "status": "inactive",
+      "accounts": [
+        {
+          "type": "checking",
+          "account_number": "CHK-1004",
+          "balance": 125.42
+        }
+      ]
+    },
+    {
+      "member_id": "56789",
+      "name": "Ethan Wilson",
+      "status": "active",
+      "accounts": [
+        {
+          "type": "checking",
+          "account_number": "CHK-1005",
+          "balance": 6890.33
+        },
+        {
+          "type": "savings",
+          "account_number": "SAV-1005",
+          "balance": 15220.75
+        }
+      ]
+    },
+    {
+      "member_id": "67890",
+      "name": "Jordan Lee",
+      "status": "active",
+      "accounts": [
+        {
+          "type": "checking",
+          "account_number": "CHK-1006",
+          "balance": 912.10
+        },
+        {
+          "type": "savings",
+          "account_number": "SAV-1006",
+          "balance": 12450.00
+        }
+      ]
+    },
+    {
+      "member_id": "78901",
+      "name": "Sarah Johnson",
+      "status": "restricted",
+      "accounts": [
+        {
+          "type": "checking",
+          "account_number": "CHK-1007",
+          "balance": 3780.90
+        },
+        {
+          "type": "savings",
+          "account_number": "SAV-1007",
+          "balance": 850.25
+        }
+      ]
+    },
+    {
+      "member_id": "89012",
+      "name": "Noah Williams",
+      "status": "active",
+      "accounts": [
+        {
+          "type": "checking",
+          "account_number": "CHK-1008",
+          "balance": 21050.60
+        }
+      ]
+    },
+    {
+      "member_id": "90123",
+      "name": "Ava Robinson",
+      "status": "restricted",
+      "accounts": [
+        {
+          "type": "savings",
+          "account_number": "SAV-1009",
+          "balance": 6500.45
+        }
+      ]
+    },
+    {
+      "member_id": "11223",
+      "name": "Liam Anderson",
+      "status": "active",
+      "accounts": [
+        {
+          "type": "checking",
+          "account_number": "CHK-1010",
+          "balance": 440.18
+        },
+        {
+          "type": "savings",
+          "account_number": "SAV-1010",
+          "balance": 28750.90
+        }
+      ]
+    }
+  ]
+}

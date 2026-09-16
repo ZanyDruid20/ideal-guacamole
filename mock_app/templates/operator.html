@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Operator Console</title>
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css') }}"
+    >
+</head>
+
+<body>
+
+    <header>
+        <h1>Automation Operator Console</h1>
+        <p>Human Intervention System</p>
+    </header>
+
+    <main>
+
+        <section>
+            <h2>Intervention Required</h2>
+
+            <p>
+                The automation has paused and requires assistance
+                from a human operator.
+            </p>
+
+            <table>
+                <tr>
+                    <td>Run Status:</td>
+                    <td id="run-status">
+                        Paused
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>Control Owner:</td>
+                    <td id="control-owner">
+                        Human
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>Current Step:</td>
+                    <td id="current-step">
+                        Waiting for automation context
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>Reason:</td>
+                    <td id="handoff-reason">
+                        Waiting for intervention details
+                    </td>
+                </tr>
+            </table>
+
+        </section>
+
+
+        <section>
+            <h2>Operator Controls</h2>
+
+            <button
+                type="button"
+                id="resume-button"
+            >
+                Resume Automation
+            </button>
+
+            <button
+                type="button"
+                id="cancel-button"
+            >
+                Cancel Run
+            </button>
+
+        </section>
+
+
+        <section>
+            <h2>Activity</h2>
+
+            <div id="activity-log">
+                No operator actions recorded.
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <script
+        src="{{ url_for('static', filename='js/app.js') }}"
+    ></script>
+
+</body>
+</html>

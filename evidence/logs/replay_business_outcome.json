@@ -1,0 +1,17 @@
+{
+  "run_type": "deterministic_replay",
+  "capability": "get_member_balances",
+  "version": "1.0.0",
+  "inputs": {
+    "member_id": "[REDACTED]"
+  },
+  "result": {
+    "status": "business_outcome",
+    "step": 2,
+    "message": "Member not found",
+    "expected": null,
+    "observed": "Member not found",
+    "outputs": {}
+  },
+  "timestamp": "2026-09-13T22:34:20.623221+00:00"
+}
